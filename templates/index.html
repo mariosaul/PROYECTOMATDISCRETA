@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador de Flujos de Información</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 20px;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        form {
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Visualizador de Flujos de Información</h1>
+
+        <!-- Formulario para añadir conexiones -->
+        <form action="/add_connection/" method="post">
+            <label for="origen">Origen:</label>
+            <input type="text" id="origen" name="origen" required placeholder="Nombre del departamento de origen">
+
+            <label for="destino">Destino:</label>
+            <input type="text" id="destino" name="destino" required placeholder="Nombre del departamento de destino">
+
+            <label for="flujo">Flujo de Información:</label>
+            <input type="number" id="flujo" name="flujo" required placeholder="Cantidad de flujo de información">
+
+            <input type="submit" value="Añadir Conexión">
+        </form>
+
+        <!-- Formulario para calcular el camino más corto -->
+        <form action="/shortest_path/" method="post">
+            <label for="source">Origen:</label>
+            <input type="text" id="source" name="source" required placeholder="Nombre del departamento de origen">
+
+            <label for="target">Destino:</label>
+            <input type="text" id="target" name="target" required placeholder="Nombre del departamento de destino">
+
+            <input type="submit" value="Buscar Camino Más Corto">
+        </form>
+
+        <!-- Mostrar el camino más corto -->
+        {% if path %}
+        <h3>Camino más corto: {{ path }}</h3>
+        <h3>Longitud del camino: {{ path_length }}</h3>
+        {% elif error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <!-- Formulario para visualizar el grafo -->
+        <form action="/visualize/" method="post">
+            <input type="submit" value="Ver Grafo Interactivo">
+        </form>
+
+        <!-- Mostrar el grafo interactivo -->
+        {% if graph_url %}
+        <iframe src="{{ graph_url }}"></iframe>
+        {% endif %}
+    </div>
+
+</body>
+</html>
